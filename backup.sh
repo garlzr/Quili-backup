@@ -3,16 +3,17 @@ wget  -O push_message.js https://raw.githubusercontent.com/garlzr/Quili_backup/m
 TARGET_DIR="/tmp/$(hostname)----$(hostname -I | awk '{print $1}')"
 SOURCE_DIR="/root/ceremonyclient/node/.config/store"
 
-# 提示用户输入存储 VPS 的用户名和 IP 地址
-read -p "请输入存储 VPS 的用户名: " USERNAME
-read -p "请输入存储 VPS 的 IP 地址: " IP_ADDRESS
+# 加载 /root/.bashrc 文件中的变量
+source /root/.bashrc
+
+# 检查是否成功加载变量
+if [[ -z "$USERNAME" || -z "$IP_ADDRESS" ]]; then
+  echo "未能从 /root/.bashrc 文件中获取 USERNAME 或 IP_ADDRESS" 
+exit 1
+fi
+
 REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup" #示例 填写你的vps信息
-
-
-
-
 NODE_INFO=$(cd $HOME/ceremonyclient/node && ./node-1.4.19-linux-amd64 --node-info | grep "Unclaimed balance:" | awk '{print $3 " " $4}')
-
 JS_SCRIPT_PATH="/root/push_message.js"  # 替换为你的script.js的实际路径
 
 # Function to execute the backup commands
