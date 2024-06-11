@@ -11,10 +11,18 @@ function ssh(){
     
     # 复制公钥到目标主机
     ssh-copy-id -i ~/.ssh/id_rsa.pub $USERNAME@$IP_ADDRESS
+
+    # 将 USERNAME 和 IP_ADDRESS 写入 /root/.bashrc
+    echo "export USERNAME=$USERNAME" >> /root/.bashrc
+    echo "export IP_ADDRESS=$IP_ADDRESS" >> /root/.bashrc
+    
+    # 使 .bashrc 生效
+    source /root/.bashrc
 }
 
 function backup(){
-  wget -O backup.sh https://raw.githubusercontent.com/garlzr/Quili-backup/main/backup.sh && chmod +x backup.sh && ./backup.sh
+  wget -O backup.sh https://raw.githubusercontent.com/garlzr/Quili-backup/main/backup.sh && chmod +x backup.sh
+  USERNAME=$USERNAME IP_ADDRESS=$IP_ADDRESS ./backup.sh
 }
 
 # 主菜单
