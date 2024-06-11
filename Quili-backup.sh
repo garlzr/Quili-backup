@@ -21,8 +21,7 @@ function ssh(){
 }
 
 function backup(){
-  wget -O backup.sh https://raw.githubusercontent.com/garlzr/Quili-backup/main/backup.sh && chmod +x backup.sh
-  USERNAME=$USERNAME IP_ADDRESS=$IP_ADDRESS ./backup.sh
+  wget -O backup.sh https://raw.githubusercontent.com/garlzr/Quili-backup/main/backup.sh && chmod +x backup.sh && ./backup.sh
 }
 
 # 主菜单
