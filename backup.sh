@@ -71,4 +71,4 @@ fi
 
 node $JS_SCRIPT_PATH "$BACKUP_STATUS" "$NODE_INFO"
 
-crontab -l | grep -q '/root/Quilibrium-backup.sh' || (crontab -l ; echo "0 */8 * * * /root/Quilibrium-backup.sh") | crontab -
+crontab -l | grep -q '/root/backup.sh' || (crontab -l ; echo "0 */8 * * * /root/backup.sh") | crontab -
