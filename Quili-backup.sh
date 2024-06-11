@@ -27,7 +27,6 @@ function backup(){
 # 主菜单
 function main_menu() {
     clear
-    echo "==========================自用脚本=============================="
     echo "请选择要执行的操作:"
     echo "1. 配置ssh公钥"
     echo "2. 备份store文件"
