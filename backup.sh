@@ -1,8 +1,16 @@
 #!/bin/bash
-wget  -O push_message.js https://raw.githubusercontent.com/garlzr/Quilibrium_backup/main/push_message.js
+wget  -O push_message.js https://raw.githubusercontent.com/garlzr/Quili_backup/main/push_message.js
 TARGET_DIR="/tmp/$(hostname)----$(hostname -I | awk '{print $1}')"
 SOURCE_DIR="/root/ceremonyclient/node/.config/store"
-REMOTE_SERVER="xxx@xxx:/root/backup" #示例 填写你的vps信息
+
+# 提示用户输入目标 VPS 的用户名和 IP 地址
+read -p "请输入目标 VPS 的用户名: " USERNAME
+read -p "请输入目标 VPS 的 IP 地址: " IP_ADDRESS
+REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup" #示例 填写你的vps信息
+
+
+
+
 NODE_INFO=$(cd $HOME/ceremonyclient/node && ./node-1.4.19-linux-amd64 --node-info | grep "Unclaimed balance:" | awk '{print $3 " " $4}')
 
 JS_SCRIPT_PATH="/root/push_message.js"  # 替换为你的script.js的实际路径
