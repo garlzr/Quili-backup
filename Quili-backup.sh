@@ -13,11 +13,12 @@ function ssh(){
     ssh-copy-id -i ~/.ssh/id_rsa.pub $USERNAME@$IP_ADDRESS
 
     # 检查并添加或修改 USERNAME 参数
-    if grep -q '^USERNAME=' /root/.bashrc; then
-        sed -i 's/^USERNAME=.*/USERNAME='"$USERNAME"'/' /root/.bashrc
+    if grep -q '^USERNAME=' /root/存储VPS信息.txt; then
+        sed -i 's/^USERNAME=.*/USERNAME='"$USERNAME"'/' /root/存储VPS信息.txt
     else
-        echo 'USERNAME='"$USERNAME" >> /root/.bashrc
+        echo 'USERNAME='"$USERNAME" >> /root/存储VPS信息.txt
     fi
+
     
     # 检查并添加或修改 IP_ADDRESS 参数
     if grep -q '^IP_ADDRESS=' /root/.bashrc; then
