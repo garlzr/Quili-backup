@@ -2,12 +2,17 @@
 TARGET_DIR="/tmp/$(hostname)----$(hostname -I | awk '{print $1}')"
 SOURCE_DIR="/root/ceremonyclient/node/.config/store"
 
-# 加载 /root/.bashrc 文件中的变量
-source /root/.bashrc
+# 从 /root/存储VPS信息.txt 文件中读取变量
+while IFS='=' read -r key value; do
+  case "$key" in
+    'USERNAME') USERNAME="$value" ;;
+    'IP_ADDRESS') IP_ADDRESS="$value" ;;
+  esac
+done < /root/存储VPS信息.txt
 
 # 检查是否成功加载变量
 if [[ -z "$USERNAME" || -z "$IP_ADDRESS" ]]; then
-  echo "未能从 /root/.bashrc 文件中获取 USERNAME 或 IP_ADDRESS"
+  echo "未能从 /root/存储VPS信息.txt 文件中获取 USERNAME 或 IP_ADDRESS"
   exit 1
 else
   echo "成功加载存储VPS信息"
@@ -56,27 +61,6 @@ while true; do
         sleep 10  # 可选：等待 10 秒后重试
     fi
 done
-# Call the JavaScript script with the backup status and node info as arguments
 
-if ! command -v node &> /dev/null
-then
-    echo "Node.js is not installed. Installing..."
-    # Install Node.js
-    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-    sudo apt-get install -y nodejs
-    npm install axios
-    # Verify installation
-    if ! command -v node &> /dev/null
-    then
-        echo "Node.js installation failed. Exiting..."
-    fi
-fi
-
-# Check if axios is installed
-if ! npm list axios &> /dev/null
-then
-    echo "axios is not installed. Installing..."
-    npm install axios
-fi
 
 (crontab -l | grep -v 'backup.sh' ; echo "* * * * * /root/backup.sh") | crontab -
