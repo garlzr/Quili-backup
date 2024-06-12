@@ -7,11 +7,15 @@ source /root/.bashrc
 
 # 检查是否成功加载变量
 if [[ -z "$USERNAME" || -z "$IP_ADDRESS" ]]; then
-  echo "未能从 /root/.bashrc 文件中获取 USERNAME 或 IP_ADDRESS" 
-exit 1
+  echo "未能从 /root/.bashrc 文件中获取 USERNAME 或 IP_ADDRESS"
+  exit 1
+else
+  echo "成功加载存储VPS信息"
+  echo "USERNAME: $USERNAME"
+  echo "IP_ADDRESS: $IP_ADDRESS"
 fi
 
-REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup" 
+REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup"
 
 # Function to execute the backup commands
 execute_commands() {
