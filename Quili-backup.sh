@@ -12,24 +12,28 @@ function ssh(){
     # 复制公钥到目标主机
     ssh-copy-id -i ~/.ssh/id_rsa.pub $USERNAME@$IP_ADDRESS
 
+    # 定义存储文件路径
+    FILE="/root/存储VPS信息.txt"
+
+    # 如果文件不存在，先创建文件
+    if [ ! -f "$FILE" ]; then
+        touch "$FILE"
+    fi
+
     # 检查并添加或修改 USERNAME 参数
-    if grep -q '^USERNAME=' /root/存储VPS信息.txt; then
-        sed -i 's/^USERNAME=.*/USERNAME='"$USERNAME"'/' /root/存储VPS信息.txt
+    if grep -q '^USERNAME=' "$FILE"; then
+        sed -i 's/^USERNAME=.*/USERNAME='"$USERNAME"'/' "$FILE"
     else
-        echo 'USERNAME='"$USERNAME" >> /root/存储VPS信息.txt
+        echo 'USERNAME='"$USERNAME" >> "$FILE"
+    fi
+    
+    # 检查并添加或修改 USERNAME 参数
+    if grep -q '^IP_ADDRESS=' "$FILE"; then
+        sed -i 's/^IP_ADDRESS=.*/IP_ADDRESS='"$IP_ADDRESS"'/' "$FILE"
+    else
+        echo 'IP_ADDRESS='"$IP_ADDRESS" >> "$FILE"
     fi
 
-    
-    # 检查并添加或修改 IP_ADDRESS 参数
-    if grep -q '^IP_ADDRESS=' /root/.bashrc; then
-        sed -i 's/^IP_ADDRESS=.*/IP_ADDRESS='"$IP_ADDRESS"'/' /root/.bashrc
-    else
-        echo 'IP_ADDRESS='"$IP_ADDRESS" >> /root/.bashrc
-    fi
-
-    # 使 .bashrc 生效
-    source /root/.bashrc
-    
     echo "ssh公钥配置成功"
 }
 
