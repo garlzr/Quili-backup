@@ -12,9 +12,12 @@ function ssh(){
     # 复制公钥到目标主机
     ssh-copy-id -i ~/.ssh/id_rsa.pub $USERNAME@$IP_ADDRESS
 
-    # 将 USERNAME 和 IP_ADDRESS 写入 /root/.bashrc
-    echo "export USERNAME=$USERNAME" >> /root/.bashrc
-    echo "export IP_ADDRESS=$IP_ADDRESS" >> /root/.bashrc
+    # 检查是否存在 USERNAME 参数，不存在则添加
+    grep -qxF 'export USERNAME=$USERNAME' /root/.bashrc || echo 'export USERNAME=$USERNAME' >> /root/.bashrc
+    
+    # 检查是否存在 IP_ADDRESS 参数，不存在则添加
+    grep -qxF 'export IP_ADDRESS=$IP_ADDRESS' /root/.bashrc || echo 'export IP_ADDRESS=$IP_ADDRESS' >> /root/.bashrc
+
     
     # 使 .bashrc 生效
     source /root/.bashrc
@@ -29,7 +32,7 @@ function main_menu() {
     clear
     echo "请选择要执行的操作:"
     echo "1. 配置ssh公钥"
-    echo "2. 备份store文件"
+    echo "2. 定期备份store文件(6h一次)"
     read -p "请输入选项（1-2）: " OPTION
 
     case $OPTION in
