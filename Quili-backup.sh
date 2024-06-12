@@ -12,14 +12,24 @@ function ssh(){
     # 复制公钥到目标主机
     ssh-copy-id -i ~/.ssh/id_rsa.pub $USERNAME@$IP_ADDRESS
 
-    # 检查是否存在 USERNAME 参数，不存在则添加
-    grep -qxF 'export USERNAME='"$USERNAME" /root/.bashrc || echo 'export USERNAME='"$USERNAME" >> /root/.bashrc
+    # 检查并添加或修改 USERNAME 参数
+    if grep -q '^USERNAME=' /root/.bashrc; then
+        sed -i 's/^USERNAME=.*/USERNAME='"$USERNAME"'/' /root/.bashrc
+    else
+        echo 'USERNAME='"$USERNAME" >> /root/.bashrc
+    fi
     
-    # 检查是否存在 IP_ADDRESS 参数，不存在则添加
-    grep -qxF 'export IP_ADDRESS='"$IP_ADDRESS" /root/.bashrc || echo 'export IP_ADDRESS='"$IP_ADDRESS" >> /root/.bashrc
+    # 检查并添加或修改 IP_ADDRESS 参数
+    if grep -q '^IP_ADDRESS=' /root/.bashrc; then
+        sed -i 's/^IP_ADDRESS=.*/IP_ADDRESS='"$IP_ADDRESS"'/' /root/.bashrc
+    else
+        echo 'IP_ADDRESS='"$IP_ADDRESS" >> /root/.bashrc
+    fi
 
     # 使 .bashrc 生效
     source /root/.bashrc
+    
+    main_menu
 }
 
 
@@ -32,7 +42,7 @@ function main_menu() {
     clear
     echo "请选择要执行的操作:"
     echo "1. 配置存储VPS的ssh公钥"
-    echo "2. 定期备份store文件至存储VPS的root/backup路径 (6h一次)"
+    echo "2. 定期备份store文件至存储VPS的root/backup路径 (6H一次)"
     read -p "请输入选项（1-2）: " OPTION
 
     case $OPTION in
