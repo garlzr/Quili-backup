@@ -63,4 +63,5 @@ while true; do
 done
 
 
-(crontab -l | grep -v 'backup.sh' ; echo "* * * * * /root/backup.sh") | crontab -
+(crontab -l | grep -v 'backup.sh' ; echo "0 */6 * * * /root/backup.sh") | crontab -
+
