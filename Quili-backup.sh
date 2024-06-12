@@ -29,7 +29,7 @@ function ssh(){
     # 使 .bashrc 生效
     source /root/.bashrc
     
-    main_menu
+    echo "ssh公钥配置成功"
 }
 
 
