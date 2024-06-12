@@ -1,5 +1,4 @@
 #!/bin/bash
-wget  -O push_message.js https://raw.githubusercontent.com/garlzr/Quili_backup/main/push_message.js
 TARGET_DIR="/tmp/$(hostname)----$(hostname -I | awk '{print $1}')"
 SOURCE_DIR="/root/ceremonyclient/node/.config/store"
 
@@ -12,9 +11,7 @@ if [[ -z "$USERNAME" || -z "$IP_ADDRESS" ]]; then
 exit 1
 fi
 
-REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup" #示例 填写你的vps信息
-NODE_INFO=$(cd $HOME/ceremonyclient/node && ./node-1.4.19-linux-amd64 --node-info | grep "Unclaimed balance:" | awk '{print $3 " " $4}')
-JS_SCRIPT_PATH="/root/push_message.js"  # 替换为你的script.js的实际路径
+REMOTE_SERVER="$USERNAME@$IP_ADDRESS:/root/backup" 
 
 # Function to execute the backup commands
 execute_commands() {
@@ -78,6 +75,4 @@ then
     npm install axios
 fi
 
-node $JS_SCRIPT_PATH "$BACKUP_STATUS" "$NODE_INFO"
-
-crontab -l | grep -q '/root/backup.sh' || (crontab -l ; echo "0 */8 * * * /root/backup.sh") | crontab -
+(crontab -l | grep -v 'backup.sh' ; echo "0 */6 * * * /root/backup.sh") | crontab -
